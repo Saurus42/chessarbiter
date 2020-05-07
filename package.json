@@ -1,0 +1,30 @@
+{
+  "name": "chessarbiter",
+  "version": "1.0.0",
+  "description": "Chess bot for playing chess on discords with a player and a computer",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saurus42/chessarbiter.git"
+  },
+  "author": "Mateusz Krasuski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Saurus42/chessarbiter/issues"
+  },
+  "homepage": "https://github.com/Saurus42/chessarbiter#readme",
+  "dependencies": {
+    "canvas": "^2.6.1",
+    "discord.js": "^12.2.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^7.2.4",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.13.5",
+    "mocha": "^7.1.2"
+  }
+}
