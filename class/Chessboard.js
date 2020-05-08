@@ -49,7 +49,6 @@ class Chessboard {
                 const char = str[j];
                 switch (char) {
                     case 'R': {
-                        //
                     }
                 }
             }

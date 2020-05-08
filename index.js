@@ -24,6 +24,7 @@ client.on('ready', async () => {
 client.on('message', msg => {
     const massage = msg.content.split(' ');
     const s = new Send_1.Send(games, chessboard, msg.channel, msg.author);
+    s.setImages(chess, field, pawn);
     if (massage[0] === `${data.token}chess`) {
         s.run(massage[1], massage[2]);
     }

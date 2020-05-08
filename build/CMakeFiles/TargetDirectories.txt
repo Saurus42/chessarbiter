@@ -1,0 +1,3 @@
+/home/saurus/Dokumenty/project/game/chessarbiter/build/CMakeFiles/rebuild_cache.dir
+/home/saurus/Dokumenty/project/game/chessarbiter/build/CMakeFiles/Pawns.dir
+/home/saurus/Dokumenty/project/game/chessarbiter/build/CMakeFiles/edit_cache.dir

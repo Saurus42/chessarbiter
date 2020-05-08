@@ -20,7 +20,6 @@ worker_threads_1.parentPort?.on('message', (value) => {
         });
     }
     else if (value.includes('move')) {
-        //
     }
 });
 worker_threads_1.parentPort?.on('close', () => {

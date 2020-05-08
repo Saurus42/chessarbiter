@@ -22,9 +22,10 @@
     "discord.js": "^12.2.0"
   },
   "devDependencies": {
-    "@types/ws": "^7.2.4",
     "@types/mocha": "^7.0.2",
     "@types/node": "^13.13.5",
-    "mocha": "^7.1.2"
+    "@types/ws": "^7.2.4",
+    "mocha": "^7.1.2",
+    "node-addon-api": "^3.0.0"
   }
 }
