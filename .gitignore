@@ -1,6 +1,9 @@
 node_modules
 *.ts
 test
-.map
+*.map
 tsconfig.json
 data.json
+*.exp
+*.sh
+.vscode

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Pawns_1 = require("./Pawns");
+const Player_1 = require("./Player");
 class Chessboard {
     constructor(canvas) {
         this.#canvas = canvas;
@@ -8,6 +9,36 @@ class Chessboard {
     }
     #canvas;
     #pawns;
+    #playerWhite;
+    #playerBlack;
+    isPlayers() {
+        if (typeof this.#playerBlack !== 'undefined' && typeof this.#playerWhite !== 'undefined') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    isPlayer() {
+        if (typeof this.#playerBlack !== 'undefined' || typeof this.#playerWhite !== 'undefined') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    setWhite(id) {
+        this.#playerWhite = new Player_1.Player(id);
+    }
+    setBlack(id) {
+        this.#playerBlack = new Player_1.Player(id);
+    }
+    getWhite() {
+        return this.#playerWhite?.id;
+    }
+    getBlack() {
+        return this.#playerBlack?.id;
+    }
     render(...args) {
         const struct = this.#pawns.getStructure();
         const ctx = this.#canvas.getContext('2d');
@@ -26,3 +57,4 @@ class Chessboard {
     }
 }
 exports.Chessboard = Chessboard;
+//# sourceMappingURL=Chessboard.js.map

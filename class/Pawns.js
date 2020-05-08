@@ -33,3 +33,4 @@ class Pawns {
     }
 }
 exports.Pawns = Pawns;
+//# sourceMappingURL=Pawns.js.map
