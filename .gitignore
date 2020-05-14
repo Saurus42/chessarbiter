@@ -7,3 +7,4 @@ data.json
 *.exp
 *.sh
 .vscode
+build

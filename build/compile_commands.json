@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/saurus/Dokumenty/project/game/chessarbiter/build",
-  "command": "/usr/bin/g++-7  -DPawns_EXPORTS -I.././node_modules/node-addon-api -I/home/saurus/node/include/node  -g -fPIC   -o CMakeFiles/Pawns.dir/src/Linux/Pawns.cpp.o -c /home/saurus/Dokumenty/project/game/chessarbiter/src/Linux/Pawns.cpp",
-  "file": "/home/saurus/Dokumenty/project/game/chessarbiter/src/Linux/Pawns.cpp"
-}
-]
