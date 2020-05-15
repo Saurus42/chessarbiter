@@ -9,8 +9,9 @@ private:
     std::vector<std::string> structure;
 public:
     static Napi::Object Init(Napi::Env env, Napi::Object exports); 
-    Napi::Value GetStructure(Napi::CallbackInfo &info);
-    Napi::Value UpdateStructure(Napi::CallbackInfo &info);
+    Napi::Value getStructure(Napi::CallbackInfo &info);
+    Napi::Value updateStructure(Napi::CallbackInfo &info);
+    Napi::Value translateStructure(Napi::CallbackInfo &info);
     Pawns(Napi::CallbackInfo &info);
     ~Pawns();
 };
@@ -19,8 +20,9 @@ Napi::FunctionReference Pawns::constructor;
 
 Napi::Object Pawns::Init(Napi::Env env, Napi::Object exports) {
     std::vector<Napi::ClassPropertyDescriptor<Pawns>> methods;
-    methods.push_back( InstanceMethod( "getStructure", reinterpret_cast<InstanceMethodCallback>(&Pawns::GetStructure)));
-    methods.push_back( InstanceMethod( "updateStructure", reinterpret_cast<InstanceMethodCallback>(&Pawns::UpdateStructure)));
+    methods.push_back( InstanceMethod( "getStructure", reinterpret_cast<InstanceMethodCallback>(&Pawns::getStructure)));
+    methods.push_back( InstanceMethod( "updateStructure", reinterpret_cast<InstanceMethodCallback>(&Pawns::updateStructure)));
+    methods.push_back( InstanceMethod( "translateStructure", reinterpret_cast<InstanceMethodCallback>(&Pawns::translateStructure)));
     Napi::Function func = DefineClass(env, "Pawns", methods);
     constructor = Napi::Persistent(func);
     constructor.SuppressDestruct();
@@ -29,26 +31,25 @@ Napi::Object Pawns::Init(Napi::Env env, Napi::Object exports) {
 }
 
 Pawns::Pawns(Napi::CallbackInfo &info) : Napi::ObjectWrap<Pawns>(info) {
-    auto env = info.Env();
     auto value = info[0].ToString().Utf8Value();
     if( value == "chess" ) {
-        structure.push_back("RBNKQNBR");
+        structure.push_back("RBNQKNBR");
         structure.push_back("pppppppp");
         structure.push_back("        ");
         structure.push_back("        ");
         structure.push_back("        ");
         structure.push_back("        ");
         structure.push_back("pppppppp");
-        structure.push_back("RBNKQNBR");
+        structure.push_back("RBNQKNBR");
     } else {
-        structure.push_back("p p p p ");
         structure.push_back(" p p p p");
         structure.push_back("p p p p ");
+        structure.push_back(" p p p p");
         structure.push_back("        ");
         structure.push_back("        ");
-        structure.push_back(" p p p p");
         structure.push_back("p p p p ");
         structure.push_back(" p p p p");
+        structure.push_back("p p p p ");
     }
 }
 
@@ -56,7 +57,7 @@ Pawns::~Pawns()
 {
 }
 
-Napi::Value Pawns::GetStructure(Napi::CallbackInfo &info) {
+Napi::Value Pawns::getStructure(Napi::CallbackInfo &info) {
     auto env = info.Env();
     auto array = Napi::Array::New(env, structure.size());
     for(auto i = 0; i < array.Length(); i++) {
@@ -65,7 +66,7 @@ Napi::Value Pawns::GetStructure(Napi::CallbackInfo &info) {
     return array;
 }
 
-Napi::Value Pawns::UpdateStructure(Napi::CallbackInfo &info) {
+Napi::Value Pawns::updateStructure(Napi::CallbackInfo &info) {
     auto env = info.Env();
     auto move = info[0].ToString().Utf8Value();
     auto start = move.substr(0, 2);
@@ -77,6 +78,20 @@ Napi::Value Pawns::UpdateStructure(Napi::CallbackInfo &info) {
     structure[endHeight][endWidth] = structure[startHeight][startWidth];
     structure[startHeight][startWidth] = ' ';
     return Napi::Value();
+}
+
+Napi::Value Pawns::translateStructure(Napi::CallbackInfo &info) {
+    auto env = info.Env();
+    auto array = Napi::Array::New(env, structure.size());
+    for(auto i = 0; i < array.Length(); i++) {
+        std::string str = "";
+        for(auto j = 0; j < structure[i].length(); j++) {
+            str.push_back(static_cast<char>(i + 49));
+            str.push_back(static_cast<char>(j + 97));
+        }
+        array[i] = Napi::String::New(env, str);
+    }
+    return array;
 }
 
 Napi::Object init(Napi::Env env, Napi::Object exports ) {

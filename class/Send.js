@@ -1,39 +1,39 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const worker_threads_1 = require("worker_threads");
-const Chessboard_1 = require("./Chessboard");
-const canvas_1 = require("canvas");
+const { Worker } = require("worker_threads");
+const { Chessboard } = require("./Chessboard");
+const { Canvas } = require("canvas");
 class Send {
     constructor(games, chessboard, channel, author) {
-        this.#messagefromWorker = (value) => {
-            let data = value.toString();
-            let values = data.split(' ');
-            if (this.#chessboard.get(this.#channel.id)?.isPlayers()) {
-                this.#channel.send(`Go @${this.#chessboard.get(this.#channel.id)?.getWhite()}.`);
-            }
-            else if (this.#chessboard.get(this.#channel.id)?.isPlayer()) {
-                if (typeof this.#chessboard.get(this.#channel.id)?.getWhite() === 'undefined') {
-                }
-                else {
-                }
-            }
-            else {
-                this.#channel.send('You cannot start the game without at least one player.');
-            }
-        };
         this.#author = author;
         this.#channel = channel;
         this.#games = games;
         this.#chessboard = chessboard;
+        this.#map = require('../map/img.json');
     }
     #author;
     #channel;
     #games;
     #chessboard;
     #images;
-    #newGame() {
+    #map;
+    #messagefromWorker = value => {
+        let data = value.toString();
+        let values = data.split(' ');
+        if (this.#chessboard.get(this.#channel.id)?.isPlayers()) {
+            this.#channel.send(`Go @${this.#chessboard.get(this.#channel.id)?.getWhite()}.`);
+        }
+        else if (this.#chessboard.get(this.#channel.id)?.isPlayer()) {
+            if (typeof this.#chessboard.get(this.#channel.id)?.getWhite() === 'undefined') {
+            }
+            else {
+            }
+        }
+        else {
+            this.#channel.send('You cannot start the game without at least one player.');
+        }
+    };
+    #newGame = () => {
         if (!this.#games.has(this.#channel.id)) {
-            this.#games.set(this.#channel.id, new worker_threads_1.Worker('./thread/index.js'));
+            this.#games.set(this.#channel.id, new Worker('./thread/index.js'));
             this.#games.get(this.#channel.id)?.postMessage('start');
             this.#games.get(this.#channel.id)?.on('message', this.#messagefromWorker);
         }
@@ -41,9 +41,9 @@ class Send {
             this.#channel.send('The game is not over yet.');
         }
     }
-    #play(param) {
+    #play = param => {
         if (!this.#chessboard.has(this.#channel.id)) {
-            this.#chessboard.set(this.#channel.id, new Chessboard_1.Chessboard(new canvas_1.Canvas(270, 270, 'pdf')));
+            this.#chessboard.set(this.#channel.id, new Chessboard(new Canvas(270, 270, 'pdf')));
         }
         if (param === 'black') {
             this.#chessboard.get(this.#channel.id)?.setBlack(this.#author.id);
@@ -52,7 +52,7 @@ class Send {
             this.#chessboard.get(this.#channel.id)?.setWhite(this.#author.id);
         }
     }
-    #end() {
+    #end = () => {
         if (this.#games.has(this.#channel.id)) {
             this.#games.get(this.#channel.id)?.terminate().then(() => this.#channel.send('End of the game.'));
             this.#games.delete(this.#channel.id);
@@ -61,7 +61,7 @@ class Send {
             this.#channel.send('The game is not over yet.');
         }
     }
-    #help() {
+    #help = () => {
         this.#channel.send(`Hello, I am a chess bot equipped with the stockfish engine. The structure of my command is as follows, $chess command [parameters]. Parameters are individual to the command. Here is a list of the most common commands:
  - help
  - new-game
@@ -71,7 +71,7 @@ class Send {
 e.t.c.
 To learn more about a command, type $chess man command.`);
     }
-    #man(param) {
+    #man = (param) => {
         switch (param) {
             case 'help': {
                 this.#channel.send('Preliminary information on how to use the bot and brief information about the bot.');
@@ -101,7 +101,6 @@ To learn more about a command, type $chess man command.`);
     setImages(...args) {
         this.#images = args;
     }
-    #messagefromWorker;
     run(command, param) {
         switch (command) {
             case 'play': {
@@ -131,4 +130,3 @@ To learn more about a command, type $chess man command.`);
     }
 }
 exports.Send = Send;
-//# sourceMappingURL=Send.js.map

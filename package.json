@@ -4,7 +4,8 @@
   "description": "Chess bot for playing chess on discords with a player and a computer",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "configure": "cmake-js configure",
+    "build": "cmake-js build",
     "test": "mocha"
   },
   "repository": {

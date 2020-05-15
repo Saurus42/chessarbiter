@@ -1,18 +1,19 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Pawns_1 = require("./Pawns");
-const Player_1 = require("./Player");
+const { Pawns } = require("../build/Release/Pawns.node");
+const { Player } = require("../build/Release/Player.node");
 class Chessboard {
-    constructor(canvas) {
+    constructor(canvas, game) {
         this.#canvas = canvas;
-        this.#pawns = new Pawns_1.Pawns('chess');
+        this.#pawns = new Pawns( game );
+        this.#position = {}
+        const struct = this.#pawns.getStructure();
     }
     #canvas;
     #pawns;
     #playerWhite;
     #playerBlack;
+    #position;
     isPlayers() {
-        if (typeof this.#playerBlack !== 'undefined' && typeof this.#playerWhite !== 'undefined') {
+        if( typeof this.#playerBlack !== 'undefined' && typeof this.#playerWhite !== 'undefined' ) {
             return true;
         }
         else {
@@ -20,18 +21,18 @@ class Chessboard {
         }
     }
     isPlayer() {
-        if (typeof this.#playerBlack !== 'undefined' || typeof this.#playerWhite !== 'undefined') {
+        if( typeof this.#playerBlack !== 'undefined' || typeof this.#playerWhite !== 'undefined' ) {
             return true;
         }
         else {
             return false;
         }
     }
-    setWhite(id) {
-        this.#playerWhite = new Player_1.Player(id);
+    setWhite( id ) {
+        this.#playerWhite = new Player( id );
     }
-    setBlack(id) {
-        this.#playerBlack = new Player_1.Player(id);
+    setBlack( id ) {
+        this.#playerBlack = new Player( id );
     }
     getWhite() {
         return this.#playerWhite?.id;
@@ -39,7 +40,7 @@ class Chessboard {
     getBlack() {
         return this.#playerBlack?.id;
     }
-    render(...args) {
+    render( ...args ) {
         const struct = this.#pawns.getStructure();
         const ctx = this.#canvas.getContext('2d');
         ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
@@ -56,4 +57,3 @@ class Chessboard {
     }
 }
 exports.Chessboard = Chessboard;
-//# sourceMappingURL=Chessboard.js.map
