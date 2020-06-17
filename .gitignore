@@ -8,3 +8,4 @@ data.json
 *.sh
 .vscode
 build
+README.md

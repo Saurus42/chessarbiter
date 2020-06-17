@@ -1,28 +1,36 @@
+///<reference path="../types/Board.d.ts"/>
 const { Worker } = require("worker_threads");
-const { Chessboard } = require("./Chessboard");
+const { Board } = require("./Board");
 const { Canvas } = require("canvas");
 class Send {
-    constructor(games, chessboard, channel, author) {
+    /**
+     * 
+     * @param {string} games 
+     * @param {Board} board 
+     * @param {string} channel 
+     * @param {string} author 
+     */
+    constructor(games, board, channel, author) {
         this.#author = author;
         this.#channel = channel;
         this.#games = games;
-        this.#chessboard = chessboard;
+        this.#board = board;
         this.#map = require('../map/img.json');
     }
     #author;
     #channel;
     #games;
-    #chessboard;
+    #board;
     #images;
     #map;
     #messagefromWorker = value => {
         let data = value.toString();
         let values = data.split(' ');
-        if (this.#chessboard.get(this.#channel.id)?.isPlayers()) {
-            this.#channel.send(`Go @${this.#chessboard.get(this.#channel.id)?.getWhite()}.`);
+        if (this.#board.get(this.#channel.id)?.isPlayers()) {
+            this.#channel.send(`Go @${this.#board.get(this.#channel.id)?.getWhite()}.`);
         }
-        else if (this.#chessboard.get(this.#channel.id)?.isPlayer()) {
-            if (typeof this.#chessboard.get(this.#channel.id)?.getWhite() === 'undefined') {
+        else if (this.#board.get(this.#channel.id)?.isPlayer()) {
+            if (typeof this.#board.get(this.#channel.id)?.getWhite() === 'undefined') {
             }
             else {
             }
@@ -42,14 +50,14 @@ class Send {
         }
     }
     #play = param => {
-        if (!this.#chessboard.has(this.#channel.id)) {
-            this.#chessboard.set(this.#channel.id, new Chessboard(new Canvas(270, 270, 'pdf')));
+        if (!this.#board.has(this.#channel.id)) {
+            this.#board.set(this.#channel.id, new Board());
         }
         if (param === 'black') {
-            this.#chessboard.get(this.#channel.id)?.setBlack(this.#author.id);
+            this.#board.get(this.#channel.id)?.setBlack(this.#author.id);
         }
         if (param === 'white') {
-            this.#chessboard.get(this.#channel.id)?.setWhite(this.#author.id);
+            this.#board.get(this.#channel.id)?.setWhite(this.#author.id);
         }
     }
     #end = () => {

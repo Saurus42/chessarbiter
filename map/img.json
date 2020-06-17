@@ -65,7 +65,7 @@
 	"sourceSize": {"w":30,"h":30}
 },
 {
-	"filename": "field0.png",
+	"filename": "field1.png",
 	"frame": {"x":129,"y":1,"w":30,"h":30},
 	"rotated": false,
 	"trimmed": false,
@@ -73,7 +73,7 @@
 	"sourceSize": {"w":30,"h":30}
 },
 {
-	"filename": "field1.png",
+	"filename": "field0.png",
 	"frame": {"x":161,"y":1,"w":30,"h":30},
 	"rotated": false,
 	"trimmed": false,
