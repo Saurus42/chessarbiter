@@ -1,31 +1,28 @@
-const { Board } = require("./Board");
-const { Canvas } = require("canvas");
+import { Board } from "./Board";
+import { Worker } from 'worker_threads';
+import { Canvas, Image } from "canvas";
+import { IMG } from "../map/img";
+import { DMChannel, NewsChannel, TextChannel, User } from "discord.js";
 /**
  * Class responsible for sending data
  * 
  */
-class Send {
-    /**
-     * Class responsible for sending data
-     * @param {string} games 
-     * @param {Board} board 
-     * @param {string} channel 
-     * @param {string} author 
-     */
-    constructor(games, board, channel, author) {
+export class Send {
+    constructor(games: Map<string, Worker>, board: Map<string, Board>, channel: TextChannel | DMChannel | NewsChannel, author: User) {
         this.#author = author;
         this.#channel = channel;
         this.#games = games;
         this.#board = board;
         this.#map = require('../map/img.json');
+        this.#images = [];
     }
-    #author;
-    #channel;
-    #games;
-    #board;
-    #images;
-    #map;
-    #messagefromWorker = value => {
+    #author: User;
+    #channel: TextChannel | DMChannel | NewsChannel;
+    #games: Map<string, Worker>;
+    #board: Map<string, Board>;
+    #images: Image[];
+    #map: IMG;
+    #messagefromWorker = (value: string) => {
         let data = value.toString();
         let values = data.split(' ');
         if (this.#board.get(this.#channel.id)?.isPlayers()) {
@@ -45,7 +42,7 @@ class Send {
      * Generate new game
      * @param {string} param 
      */
-    #newGame = param => {
+    #newGame = (param: string) => {
         if (!this.#games.has(this.#channel.id)) {
             if(param === 'chess') {
                 //
@@ -62,7 +59,7 @@ class Send {
      * 
      * @param {string} param 
      */
-    #play = param => {
+    #play = (param: string) => {
         if (!this.#board.has(this.#channel.id)) {
             this.#board.set(this.#channel.id, new Board());
         }
@@ -92,7 +89,7 @@ class Send {
 e.t.c.
 To learn more about a command, type $chess man command.`);
     }
-    #man = (param) => {
+    #man = (param: string) => {
         switch (param) {
             case 'help': {
                 this.#channel.send('Preliminary information on how to use the bot and brief information about the bot.');
@@ -163,4 +160,3 @@ To learn more about a command, type $chess man command.`);
         }
     }
 }
-exports.Send = Send;
