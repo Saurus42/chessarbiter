@@ -1,10 +1,21 @@
-const { Client } = require("discord.js");
+const { Client } = require( 'discord.js' );
 const data = require("./data.json");
-const { loadImage } = require("canvas");
-const { Send } = require("./class/Send");
+const { loadImage, Image } = require( 'canvas' );
+const Send = require( './class/Send' );
+const { Worker } = require( 'worker_threads' );
+const Board = require( './class/Board' );
 const client = new Client();
+/**
+ * @type {Image}
+ */
 var texture;
+/**
+ * @type {Map<string, Worker>}
+ */
 var games;
+/**
+ * @type {Map<string, Board>}
+ */
 var chessboard;
 client.on('ready', async () => {
     client.user?.setActivity('$chess help', { type: "WATCHING" });
