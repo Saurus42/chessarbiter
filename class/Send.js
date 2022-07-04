@@ -2,6 +2,7 @@ const Board = require( "./Board" );
 const { Worker } = require( 'worker_threads' );
 const { Canvas, Image } = require( "canvas" );
 const { DMChannel, NewsChannel, TextChannel, User } = require( "discord.js" );
+const path = require( 'path' );
 /**
  * Class responsible for sending data
  */
@@ -57,7 +58,7 @@ module.exports = class Send {
   #newGame = param => {
     if (!this.#games.has(this.#channel.id)) {
       if(param === 'chess') {
-        //
+          //
       } else if(param === 'checkers') {}
       
       this.#games.get(this.#channel.id)?.postMessage('start');
@@ -92,14 +93,15 @@ module.exports = class Send {
     }
   }
   #help = () => {
-    this.#channel.send(`Hello, I am a chess bot equipped with the stockfish engine. The structure of my command is as follows, $chess command [parameters]. Parameters are individual to the command. Here is a list of the most common commands:
- - help
- - new-game
- - move
- - play
- - man
+    const { token } = require( '../data.json' );
+    this.#channel.send(`Hello, I am a chess bot equipped with the stockfish engine. The structure of my command is as follows, ${token}chess command [parameters]. Parameters are individual to the command. Here is a list of the most common commands:
+- help
+- new-game
+- move
+- play
+- man
 e.t.c.
-To learn more about a command, type $chess man command.`);
+To learn more about a command, type ${token}chess man command.`);
   }
   /**
    * 
@@ -138,7 +140,7 @@ To learn more about a command, type $chess man command.`);
    */
   #type = param => {
     if(param === 'pvc') {
-      this.#games.set(this.#channel.id, new Worker('./thread/index.js'));
+      this.#games.set( this.#channel.id, new Worker( path.join( __dirname, '..', 'thread', 'index.js' ) ) );
     }
   }
   /**
@@ -146,7 +148,7 @@ To learn more about a command, type $chess man command.`);
    * @param  {...Image} args 
    */
   setImages(...args) {
-    this.#images = args;
+      this.#images = args;
   }
   /**
    * 
