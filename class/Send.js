@@ -24,12 +24,14 @@ module.exports = ( async () => {
       this.#map = JSON.parse( readFileSync( './map/img.json', { encoding: 'utf-8' } ) );
       this.#images = [];
       this.#manual = new PouchDB( 'Manual' );
+      this.#helpMan = new PouchDB( 'Help' );
     }
     #author;
     #channel;
     #games;
     #manual;
     #board;
+    #helpMan;
     #types;
     /**
      * @type {Image[]}
@@ -75,17 +77,30 @@ module.exports = ( async () => {
       }
     }
     /**
-     * //
+     * Help for players.
+     * @param {string} param
      */
-    #help = () => {
-      const { token } = require( '../data.json' );
-      this.#channel.send(`Hello, I am a chess bot equipped with the stockfish engine. The structure of my command is as follows, ${token}chess command [parameters]. Parameters are individual to the command. Here is a list of the most common commands:
-  - help
-  - new-game
-  - move
-  - man
-  e.t.c.
-  To learn more about a command, type ${token}chess man command.`);
+    #help = async ( param = undefined ) => {
+      if( param === undefined ) {
+        const { token } = require( '../data.json' );
+        this.#channel.send(`Hello, I am a chess bot equipped with the stockfish engine. The structure of my command is as follows, ${token}chess command [parameters]. Parameters are individual to the command. Here is a list of the most common commands:
+- help
+- new-game
+- move
+- man
+e.t.c.
+To learn more about a command, type ${token}chess man command.`);
+      } else {
+        const allDocs = await this.#helpMan.allDocs();
+        for( const doc of allDocs.rows ) {
+          const document = await this.#helpMan.get( doc.id );
+          if( document.param === param ) {
+            this.#channel.send( document.description );
+            return;
+          }
+        }
+        this.#channel.send('I don\'t know.');
+      }
     }
     /**
      * A manual for commands.
@@ -170,7 +185,7 @@ module.exports = ( async () => {
           break;
         }
         case 'help': {
-          this.#help();
+          this.#help( param1 );
           break;
         }
         case 'man': {
