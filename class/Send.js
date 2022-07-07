@@ -3,6 +3,7 @@ const { Image } = require( "canvas" );
 const { DMChannel, MessageAttachment, NewsChannel, TextChannel, User } = require( 'discord.js' );
 const { readFileSync } = require( 'fs' );
 const { IMG } = require( '../map/img' );
+const PouchDB = require( 'pouchdb' );
 module.exports = ( async () => {
   const { Chess } = await import( 'chess.js' );
   return class Send {
@@ -22,10 +23,12 @@ module.exports = ( async () => {
       this.#types = types;
       this.#map = JSON.parse( readFileSync( './map/img.json', { encoding: 'utf-8' } ) );
       this.#images = [];
+      this.#manual = new PouchDB( 'Manual' );
     }
     #author;
     #channel;
     #games;
+    #manual;
     #board;
     #types;
     /**
@@ -88,32 +91,16 @@ module.exports = ( async () => {
      * A manual for commands.
      * @param {string} param
      */
-    #man = param => {
-      switch (param) {
-        case 'help': {
-          this.#channel.send('Preliminary information on how to use the bot and brief information about the bot.');
-          break;
-        }
-        case 'new-game': {
-          this.#channel.send('Generates a new game and assigns it to the channel where the command was given. Without a generated chessboard and player assignment, the bot will ignore this command.');
-          break;
-        }
-        case 'end': {
-          this.#channel.send('Forced ending of the game. When the bot ends the game, it will give information on who won based on the points obtained from the figures in the game at a specific player.');
-          break;
-        }
-        case 'play': {
-          this.#channel.send('First use generates chessboards. each subsequent one requires the black or white parameter.');
-          break;
-        }
-        case 'move': {
-          this.#channel.send('Based on this command, the bot moves the pawn on the chessboard. Chess notation is required as a parameter.');
-          break;
-        }
-        default: {
-          this.#channel.send('I don\'t know this command.');
+    #man = async param => {
+      const allDocs = await this.#manual.allDocs();
+      for( const doc of allDocs.rows ) {
+        const document = await this.#manual.get( doc.id );
+        if( document.command === param ) {
+          this.#channel.send( document.description );
+          return;
         }
       }
+      this.#channel.send('I don\'t know this command.');
     }
     /**
      * Determining the type of game.
@@ -142,13 +129,13 @@ module.exports = ( async () => {
       const board = this.#board.get( this.#channel.id );
       if( game && type && board ) {
         if( type === 'pvc' ) {
-          game.move( param.slice( 2, 4 ) );
+          game.move( param );
           const moves = game.moves();
           const move = moves[Math.floor(Math.random() * moves.length)];
           game.move(move);
         }
         if( type === 'pvp' )
-        game.move( param.slice( 2, 4 ) );
+          game.move( param );
         const struckt = board.updateBoard( game.ascii() );
         const canvas = board.render( this.#map, this.#images[0], struckt );
         this.#channel.send( new MessageAttachment( canvas.toBuffer( 'image/png' ) ) );
