@@ -6,8 +6,11 @@
   "scripts": {
     "configure": "cmake-js configure",
     "build": "cmake-js build",
-    "test": "mocha"
+    "test": "mocha",
+    "compile": "tsc",
+    "start": "node index.js"
   },
+  "type": "commonjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Saurus42/chessarbiter.git"
@@ -20,9 +23,12 @@
   "homepage": "https://github.com/Saurus42/chessarbiter#readme",
   "dependencies": {
     "canvas": "^2.6.1",
-    "discord.js": "^12.2.0"
+    "chess.js": "^0.13.3",
+    "discord.js": "^12.2.0",
+    "moment": "^2.29.4"
   },
   "devDependencies": {
+    "@types/chess.js": "^0.13.2",
     "@types/mocha": "^7.0.2",
     "@types/node": "^13.13.5",
     "@types/ws": "^7.2.4",
