@@ -11,7 +11,7 @@
 
 ---
 
-<p align="center"> Few lines describing your project.
+<p align="center"> A bot designed to play chess on discord. Very easy and pleasant to use, it deals with pinching the correctness of players' movements in pvp. There is also a pvc game option.
     <br> 
 </p>
 
@@ -34,11 +34,11 @@ There is an option to play PvP and PvC.
 ### Prerequisites
 
 To run this bot, you must have node.js installed (minimum version up to 14). After installation in the terminal/PowerShell/CMD enter:
-```
+```cmd
 npm i -g node-gyp node-pre-gyp
 ```
 If you want to run on Windows, you must also enter PowerShell as an admin
-```
+```cmd
 npm i -g windows-build-tools
 ```
 In addition, depending on the system, a separate system-dependent configuration must be performed.
@@ -49,42 +49,42 @@ It is required to have <a href="http://downloads.sourceforge.net/gladewin32/gtk-
 
 #### OS X
 
-```
+```cmd
 brew install pkg-config cairo pango libpng jpeg giflib librsvg
 ```
 
 #### Ubuntu
 
-```
+```cmd
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 ```
 
 #### Fedora
 
-```
+```cmd
 sudo yum install gcc-c++ cairo-devel pango-devel libjpeg-turbo-devel giflib-devel
 ```
 
 #### SOlaris
 
-```
+```cmd
 pkgin install cairo pango pkg-config xproto renderproto kbproto xextproto
 ```
 
 #### OpenBSD
 
-```
+```cmd
 doas pkg_add cairo pango png jpeg giflib
 ```
 
 ### Installing
 
 After completing the configuration, you should clone the repository
-```
+```cmd
 git clone https://github.com/Saurus42/chessarbiter.git
 ```
 Then start installing the packages
-```
+```cmd
 npm i
 ```
 
@@ -92,7 +92,7 @@ npm i
 ## 🎈 Usage <a name="usage"></a>
 
 To run the bot, you need to generate a data.json file in the main directory of the repository with the following structure
-```
+```json
 {
   "token": "Prefix-Command-Bot",
   "secret": "Your-Token-Bot"
