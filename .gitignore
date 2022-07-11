@@ -7,6 +7,5 @@ data.json
 *.sh
 .vscode
 build
-README.md
 Manual
 Help

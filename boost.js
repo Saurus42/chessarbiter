@@ -74,5 +74,5 @@ async function generateHelp() {
   console.log(await help.allDocs())
 }
 
-// generateManual();
+generateManual();
 generateHelp();
