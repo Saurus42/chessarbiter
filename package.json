@@ -34,7 +34,7 @@
     "@types/node": "^13.13.5",
     "@types/pouchdb": "^6.4.0",
     "@types/ws": "^7.2.4",
-    "mocha": "^7.1.2",
+    "mocha": "^10.2.0",
     "node-addon-api": "^3.0.0"
   }
 }
